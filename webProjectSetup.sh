@@ -51,6 +51,17 @@ yes or no : " option_sass
 }
 done
 
+# asking to include bootstrap
+
+option_bootstrap=$5
+while [[ -z $option_sass ]] ; do
+{
+    read -p "do you want to include bootstrap ?
+yes or no : " option_boostrap
+    
+}
+done
+
 
 # getting the name of the exercice directory
 name_exercice=$4
@@ -61,13 +72,21 @@ if [[ $option_exercice == yes || $option_exercice == y || $option_exercice == YE
     done
 
     mkdir -p $path_project/$name_project/$name_exercice/public/{pages,images,vedios,css}
-    echo -e "created project ${YELLOW}$name_project${RESET} in ${YELLOW}$path_project${RESET}"
+    echo -e "created project ${YELLOW}$name_project${RESET} in ${YELLOW}$path_project${ RESET}"
     echo -e "created subdirectory $name_exercice $name_project"
+
     # if option_sass  is true 
     if [[ $option_sass == yes || $option_sass == y || $option_sass == YES   ]]; then 
         mkdir -p    $path_project/$name_project/$name_exercice/src/sass/modules/{about,home/sections}
+        touch   app.sass  _allModules.sass _allVariables.sass /src/sass/modules/home/{_footer.scss,_header.scss,_main.scss}
     fi
 
+    # if option_bootstrap  is true 
+    if [[ $option_bootstrap == yes || $option_bootstrap == y || $option_bootstrap == YES   ]]; then 
+        npm init -y 
+        nmp i bootstrap
+    fi
+    
     echo "generating files"
     cd $path_project/$name_project/$name_exercice/
     echo "<!DOCTYPE html>
