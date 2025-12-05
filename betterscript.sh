@@ -80,17 +80,73 @@ while [[ -z $option_sass ]] ; do
 {
     read -p "do you want to creat a sass directory ?
 yes or no : " option_sass
-    
+
 }
 done
 
 # if option_sass  is true 
-if [[ $option_sass == yes || $option_sass == y || $option_sass == YES   ]]; then 
-    mkdir -p    src/sass/modules/{about,home/sections}
-    touch   app.sass  _allModules.sass _allVariables.sass src/sass/modules/home/{_footer.sass,_header.sass,_main.sass}
-    echo -e "${GREEN}sass structur added${RESET}"
-fi
+if [[ $option_sass == yes || $option_sass == y || $option_sass == YES   ]]; then
 
+    mkdir -p    src/sass/modules/{about,home}
+
+    option_sassscss=
+
+    while [[ -z $option_sassscss ]] ; do
+    {
+
+        read -p "sass or scss : " option_sassscss
+        
+    }
+    done
+
+    if [[ $option_sassscss == sass || $option_sassscss == SACC ]]; then
+
+    touch   src/sass/{app.sass,_allModules.sass,_variables.sass,modules/home/{_footer.sass,_header.sass,_main.sass}}
+    echo -e "${GREEN}sass structur added${RESET}"
+
+    #*import bootstrap is commanted by default
+
+    #import variables modules bootstrap to app.sass
+    echo "@import ./_variables
+//@import ../../node_modules/bootstrap/scss/bootstrap
+@import ./_allModules" > src/sass/app.sass
+
+    #import functions and variables from bootstrap 
+echo "//@import ../../node_modules/bootstrap/scss/functions
+//@import ../../node_modules/bootstrap/scss/variables" > src/sass/_variables.sass
+
+    #import home items to allmodules
+    echo "@import ./modules/home/_header
+@import ./modules/home/_main
+@import ./modules/home/_footer" > src/sass/_allModules.sass
+
+
+    elif [[ $option_sassscss == scss || $option_sassscss == SCSS ]]; then
+
+    touch   src/sass/{app.scss,_allModules.scss,_variables.scss,modules/home/{_footer.scss,_header.scss,_main.scss}}
+    echo -e "${GREEN}scss structur added${RESET}"
+
+    #*import bootstrap is commanted by default
+
+    #import variables modules bootstrap to app.scss
+    echo "@import "./_variables";
+//@import "../../node_modules/bootstrap/scss/bootstrap";
+@import "./_allModules";
+" > src/sass/app.scss
+
+    #import functions and variables from bootstrap 
+echo "//@import "../../node_modules/bootstrap/scss/functions";
+// @import "../../node_modules/bootstrap/scss/variables";" > src/sass/_variables.scss
+
+    #import home items to allmodules
+    echo "@import "./modules/home/_header";
+@import "./modules/home/_main";
+@import "./modules/home/_footer";
+" > src/sass/_allModules.scss
+
+    fi
+
+fi
 
 # asking to include bootstrap
 
@@ -110,6 +166,7 @@ if [[ $option_bootstrap == yes || $option_bootstrap == y || $option_bootstrap ==
     echo -e "${GREEN}bootstrap added${RESET}"
 fi
 
+# open vscode if option_code is true 
 echo -e "${GREEN}done${RESET}"
     echo "I assume you have VScode"
     echo "do you want to open this project in vscode ?"
